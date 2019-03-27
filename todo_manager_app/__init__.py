@@ -15,7 +15,17 @@ def create_app(test_config=None):
     @app.route('/', methods = ['GET', 'POST'])
     def index():
         if request.method == 'GET':
-            return render_template('index.html')
+            from . import item
+            from . import db
+
+            todos = db.retrieve()
+            todoList = []
+
+            for each in todos:
+                newItem = item.Item(each[1])
+                todoList.append(newItem)
+
+            return render_template('index.html', todoList=todoList)
         if request.method == 'POST':
             from . import item
             from . import db
@@ -23,13 +33,21 @@ def create_app(test_config=None):
             entry = request.form['text']
             newItem = item.Item(entry)
 
-            db.connect()
             db.insert(entry)
 
-            return render_template('index.html', newItem=newItem, completed=newItem.completed)
+            todos = db.retrieve()
+            todoList = []
+
+            for each in todos:
+                newItem = item.Item(each[1])
+                todoList.append(newItem)
+
+            return render_template('index.html', todoList=todoList)
 
     @app.route('/update', methods = ['GET', 'POST'])
     def update(todo):
+
+        
         return render_template('index.html')
 
     return app
