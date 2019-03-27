@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from datetime import datetime
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -12,9 +13,25 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
 
-    @app.route('/')
+    @app.route('/', methods = ['GET', 'POST'])
     def index():
-        return render_template('index.html')
+        if request.method == 'GET':
+            return render_template('index.html')
+        if request.method == 'POST':
+            class Item(object):
+                def __init__(self, text):
+                    self.completed = False
+                    self.time = datetime.now().strftime("%m-%d")
+                    self.text = text
 
+            entry = request.form['text']
+            instance = Item(entry)
+            item = f'{instance.time} | {instance.text}'
+
+            return render_template('index.html', item=item, completed=instance.completed)
+
+    @app.route('/update', methods = ['GET', 'POST'])
+    def update(todo):
+        return render_template('index.html')
 
     return app

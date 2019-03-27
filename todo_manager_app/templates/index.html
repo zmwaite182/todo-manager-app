@@ -2,6 +2,16 @@
 {% block title %}To-Do Application{% endblock %}
 {% block content %}
   <ul>
-    {% include 'layouts/list.html' %}
+    {% if completed == True %}
+      <li><p>\u2022</p>{{ item }}</li>
+    {% endif %}
+    {% if completed == False %}
+      <li><a href="/update"><input type="button">{{ item }}</a></li>
+    {% endif %}
   </ul>
+
+  <form method="post">
+    <input type="text" name="text">
+    <input type="submit" value="Add Item">
+  </form>
 {% endblock %}
