@@ -2,11 +2,12 @@
 {% block title %}To-Do Application{% endblock %}
 {% block content %}
   <ul>
+    <li><a href="/update"><input type="button">03-27 | do laundry</a></li>
     {% if completed == True %}
-      <li><p>\u2022</p>{{ item }}</li>
+      <li><p>\u2022</p>{{ newItem.time }} | {{ newItem.text }}</li>
     {% endif %}
     {% if completed == False %}
-      <li><a href="/update"><input type="button">{{ item }}</a></li>
+      <li><a href="/update"><input type="button">{{ newItem.time }} | {{ newItem.text }}</a></li>
     {% endif %}
   </ul>
 

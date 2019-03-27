@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request
-from datetime import datetime
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -18,17 +17,16 @@ def create_app(test_config=None):
         if request.method == 'GET':
             return render_template('index.html')
         if request.method == 'POST':
-            class Item(object):
-                def __init__(self, text):
-                    self.completed = False
-                    self.time = datetime.now().strftime("%m-%d")
-                    self.text = text
+            from . import item
+            from . import db
 
             entry = request.form['text']
-            instance = Item(entry)
-            item = f'{instance.time} | {instance.text}'
+            newItem = item.Item(entry)
 
-            return render_template('index.html', item=item, completed=instance.completed)
+            db.connect()
+            db.insert(entry)
+
+            return render_template('index.html', newItem=newItem, completed=newItem.completed)
 
     @app.route('/update', methods = ['GET', 'POST'])
     def update(todo):
