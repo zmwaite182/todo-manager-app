@@ -6,7 +6,6 @@ def insert(todo):
     conn = psycopg2.connect(dbname="todos")
     cur = conn.cursor()
     now = datetime.now().strftime("%m/%d/%y")
-    print(now)
     cur.execute(f"INSERT INTO todos (completed, todo_date, todo_text) VALUES (False, '{now}', '{todo}');")
     conn.commit()
     cur.close()

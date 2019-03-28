@@ -33,23 +33,36 @@ def create_app(test_config=None):
             from . import db
 
             entry = request.form['text']
-            newItem = item.Item(entry)
 
-            db.insert(entry)
+            # PLANNING ON CHANGING THE ID VALUES FROM THE HIDDEN INPUT TO BE INTEGERS
 
-            todos = db.retrieve()
-            todoList = []
+            if not isinstance(entry, int):
 
-            for each in todos:
-                newItem = item.Item(each)
-                todoList.append(newItem)
+                newItem = item.Item(entry)
+
+                db.insert(entry)
+
+                todos = db.retrieve()
+                todoList = []
+
+                for each in todos:
+                    newItem = item.Item(each)
+                    todoList.append(newItem)
+
+            else:
+                todos = db.retrieve()
+                todoList = []
+
+                for each in todos:
+                    if each[0] != entry:
+                        newItem = item.Item(each[1])
+                        todoList.append(newItem)
+                    else:
+                        newItem = item.Item(each[1])
+                        newItem.completed = True
+                        todoList.append(newItem)
 
             return render_template('index.html', todoList=todoList)
 
-    @app.route('/update', methods = ['GET', 'POST'])
-    def update(todo):
-
-
-        return render_template('index.html')
 
     return app
