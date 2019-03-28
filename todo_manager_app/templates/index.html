@@ -7,7 +7,7 @@
         <li><p>\u2022</p>{{ each.time }} | {{ each.text }}</li>
       {% endif %}
       {% if each.completed == False %}
-        <li><a href="/update"><input type="button">{{ each.time }} | {{ each.text }}</a></li>
+        <li><a href="/update"><input type="button"></a>{{ each.time }} | {{ each.text }}</li>
       {% endif %}
     {% endfor %}
   </ul>

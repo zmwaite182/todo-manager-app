@@ -5,6 +5,8 @@ def create_app(test_config=None):
 
     app.config.from_mapping(
         SECRET_KEY='dev',
+        DB_NAME='flasktodo',
+        DB_USER='flasktodo_user'
     )
 
     if test_config is None:
@@ -39,7 +41,7 @@ def create_app(test_config=None):
             todoList = []
 
             for each in todos:
-                newItem = item.Item(each[1])
+                newItem = item.Item(each)
                 todoList.append(newItem)
 
             return render_template('index.html', todoList=todoList)
@@ -47,7 +49,7 @@ def create_app(test_config=None):
     @app.route('/update', methods = ['GET', 'POST'])
     def update(todo):
 
-        
+
         return render_template('index.html')
 
     return app
